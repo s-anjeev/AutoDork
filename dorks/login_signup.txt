@@ -1,0 +1,31 @@
+inurl:login
+inurl:signin
+intitle:login
+intitle:signin
+inurl:secure
+inurl:register
+inurl:forgot
+inurl:reset
+inurl:auth
+inurl:admin
+inurl:administrator
+inurl:webadmin
+inurl:sysadmin
+inurl:dashboard
+intitle:"login"
+intitle:"admin login"
+intitle:"user login"
+intitle:"manager login"
+intitle:"employee login"
+intxt:"login"
+intxt:"admin login"
+intxt:"user login"
+intxt:"manager login"
+intxt:"employee login"
+inurl:"/admin.php"
+inurl:"/admin/login.php"
+inurl:"/user.php"
+inurl:"/upload"
+inurl:"/dashboard"
+inurl:"/config.php"
+inurl:"/config.json"

@@ -1,0 +1,4 @@
+inurl:apidocs
+inurl:api-docs
+inurl:swagger
+inurl:api-explorer

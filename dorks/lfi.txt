@@ -1,0 +1,10 @@
+inurl:include
+inurl:dir
+inurl:detail=
+inurl:file=
+inurl:folder=
+inurl:inc=
+inurl:locate=
+inurl:doc=
+inurl:conf= 
+inurl:&

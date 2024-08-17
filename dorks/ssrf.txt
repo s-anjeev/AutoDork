@@ -1,0 +1,9 @@
+inurl:http
+inurl:url=
+inurl:path=
+inurl:dest=
+inurl:html=
+inurl:data=
+inurl:domain=
+inurl:page= 
+inurl:&

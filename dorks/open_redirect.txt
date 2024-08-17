@@ -1,0 +1,10 @@
+inurl:url=
+inurl:return=
+inurl:next=
+inurl:redirect=
+inurl:redir=
+inurl:ret=
+inurl:r2=
+inurl:page= 
+inurl:&
+inurl:http

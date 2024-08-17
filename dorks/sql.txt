@@ -1,0 +1,8 @@
+inurl:id=
+inurl:pid=
+inurl:category=
+inurl:cat=
+inurl:action=
+inurl:sid=
+inurl:dir= 
+inurl:&

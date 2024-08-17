@@ -1,0 +1,10 @@
+inurl:"error"
+intitle:"exception"
+intitle:"failure"
+intitle:"server at"
+inurl:exception
+intxt:"database error"
+intxt:"SQL syntax"
+intxt:"undefined index"
+intxt:"unhandled exception"
+intxt:"stack trace"

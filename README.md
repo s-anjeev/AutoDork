@@ -19,7 +19,7 @@ The script requires Google API keys and Custom Search Engine (CSE) IDs to functi
 Run the script with the following command-line arguments:
 
 1. Perform a single dork search:
-```python dorking_king.py -D example.com -Q inurl:login```
+```python dorking_king.py -D site:example.com -Q inurl:login```
 
 2. Perform multiple dork searches from a file:
-```python dorking_king.py -D example.com -F dorks.txt```
+```python dorking_king.py -D site:example.com -F dorks.txt```

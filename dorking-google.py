@@ -18,11 +18,11 @@ def parse_args():
     parser = argparse.ArgumentParser(epilog='\tExample: \r\npython ' + sys.argv[0] + " -D site:example.com -Q inurl:login")
     parser.error = custom_parser_error
     parser._optionals.title = "OPTIONS"
-    parser.add_argument('-D', '--domain', help="Domain name for Google Dorking.", required=True)
-    parser.add_argument('-Q', '--query', help="Single Google dork for the domain.")
-    parser.add_argument('-F', '--file', help="File containing Google dork for the domain.")
-    parser.add_argument('-O', '--output', help="File name to store the dorks result (This feature is not yet implemented).")
-    parser.add_argument('-T', '--threads', help='Number of threads to use for subbrute bruteforce (This feature is not yet implemented).', type=int, default=5)
+    parser.add_argument('-D', '--domain', help="Domain name for Google Dorking.\n e.g. site:example.com", required=True)
+    parser.add_argument('-Q', '--query', help="Single Google dork for the domain.\n e.g. -Q inurl:admin")
+    parser.add_argument('-F', '--file', help="File containing Google dork for the domain.\n -F path/to/file.txt")
+    parser.add_argument('-O', '--output', help="File name to store the dorks result (under development).")
+    parser.add_argument('-T', '--threads', help='Number of threads to use for subbrute bruteforce (under development).', type=int, default=5)
     return parser.parse_args()
 
 def fetch_api_key():
@@ -40,12 +40,11 @@ def fetch_api_key():
         exit()
 
 def google_search(domain, API_key, CSE_Id, num_results=100, query=None):
-    if query:  # Only append query if it's not None or an empty string
+    if query:  # Append query if provided
         domain = f"{domain} {query}"
 
     api_key = API_key
     cse_id = CSE_Id
-    response = ""
     links = []
     start = 1
     print()
@@ -58,39 +57,46 @@ def google_search(domain, API_key, CSE_Id, num_results=100, query=None):
             'cx': cse_id,
             'q': domain,
             'start': start,
-            'num': 10  # Number of results per page (10 is the maximum allowed)
+            'num': 10  # Maximum allowed results per page
         }
         try:
             response = requests.get(url, params=params)
-            # print(response.json())
-            
+
+            # Handle rate limit (429) or too many requests (403)
             if response.status_code == 429:
                 print(colored("[-] 429 Rate limit exceeded.", "light_red"))
                 API_key, CSE_Id = fetch_api_key()
-                if API_key:
-                    print(colored("[+] Continuing with a new API key.", "light_blue"))
-                    api_key = API_key
-                    cse_id = CSE_Id
-                    start = 1
-                    continue
-
-            if response.status_code == 403 and "userRateLimitExceeded" in response.json():
-                print(colored("[-] 403 Too Many Requests. Pausing...", "light_red"))
-                time.sleep(150)
+                print(colored("[+] Switching to a new API key.", "light_blue"))
+                api_key = API_key
+                cse_id = CSE_Id
+                start = 1  # Restart search with the new key
                 continue
-        
+
+            if response.status_code == 403:
+                error_message = response.json().get("error", {}).get("message", "")
+                if "userRateLimitExceeded" in error_message:
+                    print(colored("[-] 403 Too Many Requests. Pausing...", "light_red"))
+                    time.sleep(150)  # Wait before retrying
+                    continue
+                else:
+                    print(colored(f"[-] 403 Forbidden: {error_message}.", "light_red"))
+                    break
+
             if response.status_code == 200:
                 response.raise_for_status()
                 results = response.json()
                 new_links = [item['link'] for item in results.get('items', [])]
                 links.extend(new_links)
-                
-                if not new_links:
+
+                if not new_links:  # Stop if no more results are available
                     break
                 
                 start += 10
         except requests.exceptions.RequestException as e:
             print(colored(f"[-] Error during API request: {e}.", "light_red"))
+            break
+        except Exception as e:
+            print(colored(f"[-] Unexpected error: {e}.", "light_red"))
             break
 
     return links
